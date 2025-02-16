@@ -37,6 +37,10 @@
     @apply border rounded-3xl border-threads-gray-light p-5 bg-threads-gray hover:bg-gray-900 duration-150;
 }
 
+.title {
+    @apply text-center font-bold text-white text-xl;
+}
+
 /* User */
 .user-button {
     @apply border border-threads-gray-light rounded-xl py-3 w-full text-center hover:bg-threads-gray-light duration-150 cursor-pointer mt-3;
