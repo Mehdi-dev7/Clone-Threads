@@ -1,12 +1,21 @@
 "use client";
 
 import Button from "@/components/Button/Button";
+import { setCookie } from "cookies-next";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Pass() {
+  // Variables
+  const router = useRouter();
 
-  const onContinu = () => {
-    alert("Continuer");
+  // Function
+  const onContinue = () => {
+   // Generate a new cookie
+   setCookie("guest", "true");
+
+   // Redirect
+   router.push("/");
   }
 
 
@@ -35,7 +44,7 @@ export default function Pass() {
       </p>
 
 			{/* Button */}
-      <Button onClick={onContinu}>Continuer</Button>
+      <Button onClick={onContinue}>Continuer</Button>
 		</div>
 	);
 }
