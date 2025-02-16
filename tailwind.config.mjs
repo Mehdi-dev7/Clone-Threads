@@ -8,8 +8,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        threads: {
+          gray: "#0F0F0F",
+          "gray-dark": "#1E1E1E",
+          "gray-light": "#7A7A7A",
+          modal: "#414040",
+        }
       },
     },
   },
