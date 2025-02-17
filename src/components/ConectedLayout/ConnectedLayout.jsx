@@ -16,7 +16,7 @@ export default function ConnectedLayout({ children }) {
 			{/* Header */}
 			<header className="flex justify-between items-center py-4">
 				{/* Nav */}
-				<nav className="absolute top-0 left-0 right-0 flex justify-center py-7 gap-5">
+				<nav className="absolute top-0 left-0 right-0 flex justify-center py-7 gap-5 z-0">
 					<Link href="/">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -55,8 +55,10 @@ export default function ConnectedLayout({ children }) {
 
 				{/* Button */}
 
-				<div>
+				<div className="z-10">
+          <Link href="/login">
 					<Button withoutMarginTop>Se connecter</Button>
+          </Link>
 				</div>
 			</header>
 
