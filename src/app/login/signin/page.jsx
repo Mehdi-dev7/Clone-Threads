@@ -1,54 +1,50 @@
 "use client";
-import { creatUser } from "@/actions/create-user"
-import Button from "@/components/Button/Button";
-import Link from "next/link";
-import { toast } from "react-toastify";
-import { checkEmail } from "@/utils/chek-emailsyntax";
-import { useRouter } from "next/navigation";
 
-export default function Sgnup() {
+import Button from "@/components/Button/Button";
+import { checkEmail } from "@/utils/chek-emailsyntax";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
+
+export default function Sigin() {
 	// Variables
 	const router = useRouter();
 
-
 	// Function
-	const prepareCreateUser = async (formData) => {
-		const username = formData.get("username");
-		const pseudo = formData.get("pseudo");
+	const prepareLogin = async (formData) => {
 		const email = formData.get("email");
 		const password = formData.get("password");
 
-    //console.log(username, pseudo, email, password);
-
-		// if a field is empty
-		if (!username || !pseudo || !email || !password) {
+		console.log(email, password);
+		// If a field is empty
+		if (!email || !password) {
 			// Notification
 			return toast.error("Veuillez remplir tous les champs");
 		}
-
 		// Check if the email is valid
 		if (!checkEmail(email)) {
 			// Notification
 			return toast.error("L'adresse email est invalide");
-			
 		}
-
+		// sign in the user
 		try {
+			const response = await signIn("credentials", { email, password, redirect: false });
 
-			await creatUser(username, pseudo, email, password);
-		}
-    catch (error) {
+      if(response.error) {
+        return toast.error(response.error);
+      }
+		} catch (error) {
 			// Notification
 			return toast.error(error.message);
 		}
 
 		// Success
-		toast.success("Inscription réussie");
+		toast.success("Connexion réussie");
 
 		// Redirect to the home page
-		router.push("/login/signin");
+		router.replace("/");
 	};
-
 	return (
 		<div className="w-[400px] mx-auto">
 			{/* Title */}
@@ -66,24 +62,10 @@ export default function Sgnup() {
 						></path>
 					</svg>
 				</Link>
-				Inscrivez-vous
+				Connectez-vous
 			</h1>
 			{/* Form */}
-			<form action={prepareCreateUser}>
-				<input
-					type="text"
-					name="username"
-					placeholder="Nom d'utilisateur"
-					className="input"
-					required
-				/>
-				<input
-					type="text"
-					name="pseudo"
-					placeholder="Pseudo"
-					className="input"
-					required
-				/>
+			<form action={prepareLogin}>
 				<input
 					type="email"
 					name="email"
@@ -98,15 +80,15 @@ export default function Sgnup() {
 					className="input"
 					required
 				/>
-				<Button formButton>S'inscrire</Button>
+				<Button formButton>Se connecter</Button>
 			</form>
 			<div className="flex justify-center items-center mt-4">
 				<div className="border-t border-threads-gray-light w-1/4"></div>
 				<div className="text-threads-gray-light mx-4">ou</div>
 				<div className="border-t border-threads-gray-light w-1/4"></div>
 			</div>
-			<Link href="/login/signin">
-				<Button>Se connecter</Button>
+			<Link href="/login/signup">
+				<Button>Créer un compte</Button>
 			</Link>
 		</div>
 	);
