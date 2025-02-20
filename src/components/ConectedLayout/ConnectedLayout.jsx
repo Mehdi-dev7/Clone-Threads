@@ -6,26 +6,12 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Button from "../Button/Button";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 
 export default function ConnectedLayout({ children }) {
 	// Variables
 
 	const pathname = usePathname();
-	const { data: session, status} = useSession();
-	const [isSessionLoaded, setIsSessionLoaded] = useState(false);
-
-	useEffect(() => {
-		if (status !== "loading") {
-			setIsSessionLoaded(true);
-
-		}
-	}, [status]);
-
-	const handleLogout = async () => {
-		await signOut({redirect: false});
-		setIsSessionLoaded(false);
-	};
+	const { data: session } = useSession();
 
 	return (
 		<section className="flex flex-col min-h-screen px-5">
@@ -72,22 +58,13 @@ export default function ConnectedLayout({ children }) {
 				{/* Button */}
 
 				<div className="z-10">
-				{status === "loading" ? (
-            // Affiche un bouton de chargement pendant la connexion
-            <Button withoutMarginTop disabled>Chargement...</Button>
-          ) : (
-            <>
-              {session?.user?.email ? (
-                <Button withoutMarginTop onClick={handleLogout}>
-                  Se déconnecter
-                </Button>
-              ) : (
-                <Link href="/login">
-                  <Button withoutMarginTop>Se connecter</Button>
-                </Link>
-              )}
-            </>
-          )}
+					{session?.user?.email ? (
+						<Button withoutMarginTop onClick={() => signOut()}>Se déconnecter</Button>
+					) : (
+						<Link href="/login">
+							<Button withoutMarginTop>Se connecter</Button>
+						</Link>
+					)}
 				</div>
 			</header>
 
