@@ -51,6 +51,23 @@ export default function ConnectedLayout({ children }) {
 							></path>
 						</svg>
 					</Link>
+
+					{/* User */}
+					{session?.user?.email && (
+						<Link href={`/@${session.user.pseudo}`}>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className={`w-10 h-10 hover:bg-threads-gray-dark duration-150 p-1 rounded-xl ${
+									pathname.includes("@")
+										? "text-white"
+										: "text-threads-gray-light"
+								}`}
+								viewBox="0 0 256 256"
+							>
+								<path fill="currentColor" d="M234.38 210a123.36 123.36 0 0 0-60.78-53.23a76 76 0 1 0-91.2 0A123.36 123.36 0 0 0 21.62 210a12 12 0 1 0 20.77 12c18.12-31.32 50.12-50 85.61-50s67.49 18.69 85.61 50a12 12 0 0 0 20.77-12M76 96a52 52 0 1 1 52 52a52.06 52.06 0 0 1-52-52"></path>
+							</svg>
+						</Link>
+					)}
 				</nav>
 				{/* Logo */}
 				<Image src="/logo.png" alt="Threads" width={40} height={40} />
@@ -59,7 +76,9 @@ export default function ConnectedLayout({ children }) {
 
 				<div className="z-10">
 					{session?.user?.email ? (
-						<Button withoutMarginTop onClick={() => signOut()}>Se déconnecter</Button>
+						<Button withoutMarginTop onClick={() => signOut()}>
+							Se déconnecter
+						</Button>
 					) : (
 						<Link href="/login">
 							<Button withoutMarginTop>Se connecter</Button>
