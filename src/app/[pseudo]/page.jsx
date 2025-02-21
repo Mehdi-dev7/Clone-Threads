@@ -1,28 +1,48 @@
 "use client";
 
+import Button from "@/components/Button/Button";
 import ConnectedLayout from "@/components/ConectedLayout/ConnectedLayout";
 import Post from "@/components/Post/Post";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { notFound, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 export default function Profile() {
 	// Variable
 	const params = useParams();
 	const pseudo = params.pseudo.slice(3); // slice permet de retirer les caracteres 1,2,3 du pseudo
+	const router = useRouter();
+	const { data: session } = useSession();
 	//console.log(params);
 
 	// State
 	const [user, setUser] = useState([]);
 	const [posts, setPosts] = useState([]);
+	const [profileInput, setProfileInput] = useState("");
+	const [bioInput, setBioInput] = useState("");
+	const [linkInput, setLinkInput] = useState("");
+	const [openModale, setOpenModale] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if (!pseudo) {
-			notFound();
+			router.push("/");
 		}
 
 		fetchUserDataPosts();
 	}, []);
+
+	useEffect(() => {
+		if (openModale) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "unset";
+		}
+	}, [openModale]);
+
 
 	// Function
 	const fetchUserDataPosts = async () => {
@@ -42,12 +62,91 @@ export default function Profile() {
 				"Erreur lors de la récupération des données de l'utilisateur"
 			);
 		}
+		if (!data.user) {
+			router.push("/");
+			return;
+		}
+
 		setUser(data.user);
 		setPosts(data.posts);
 	};
+	const edit = () => {
+		// Set inputs
+		setProfileInput(user.profile);
+		setBioInput(user.bio);
+		setLinkInput(user.url);
+
+		setOpenModale(true);
+	};
+	const editUser = async () => {}
 
 	return (
 		<ConnectedLayout>
+			{openModale &&
+				createPortal(
+					<div
+						className="modale-background"
+						onClick={(e) => {
+							if (e.target === e.currentTarget) {
+								setOpenModale(false);
+							}
+						}}
+					>
+						<div className="modale-user-foreground">
+							{/* Photo */}
+							<div className="flex gap-3">
+								<div className="flex-1">
+									<label className="label" htmlFor="picture">
+										Photo de profil
+									</label>
+									<input
+										type="url"
+										name="picture"
+										className="input"
+										placeholder="https://www.johndoe.com/image.png"
+										value={profileInput}
+										onChange={(e) => setProfileInput(e.target.value)}
+									/>
+								</div>
+								<div>
+									<Image
+										src={user.profile}
+										alt="User"
+										width={100}
+										height={100}
+										className="rounded-full object-cover"
+									/>
+								</div>
+							</div>
+							{/* bio */}
+							<div className="mt-5">
+								<label htmlFor="bio" className="label">
+									Biographie
+								</label>
+								<textarea
+									name="bio"
+									className="input"
+									placeholder="Bio"
+									id="bio"
+									value={bioInput}
+									onChange={(e) => setBioInput(e.target.value)}
+								></textarea>
+							</div>
+							{/* url */}
+							<div className="mt-5">
+								<label htmlFor="url" className="label">Lien</label>
+								<input type="url" name="url" className="input" placeholder="https://believemy.com" value={linkInput} onChange={(e) => setLinkInput(e.target.value)} />
+							</div>
+							<div className="flex justify-end mt-1">
+								<div>
+									<Button onClick={editUser} disabled={isLoading}>
+										Terminer</Button>
+								</div>
+							</div>
+						</div>
+					</div>,
+					document.body
+				)}
 			<div className="mt-10 md:w-[700px] mx-auto text-white">
 				{/* Infos */}
 				<div className="flex justify-between gap-4">
@@ -77,6 +176,12 @@ export default function Profile() {
 						/>
 					</div>
 				</div>
+				{/* Updating */}
+				{session?.user?.pseudo === pseudo && (
+					<div className="user-button" onClick={edit}>
+						Modifier le profil
+					</div>
+				)}
 
 				{/* Tabs */}
 				<div className="flex mt-10">

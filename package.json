@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"bcrypt": "^5.1.1",
+		"bson": "^6.10.3",
 		"cookies-next": "^5.1.0",
 		"moment-timezone": "^0.5.47",
 		"mongodb": "^6.13.0",
