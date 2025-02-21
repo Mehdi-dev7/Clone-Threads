@@ -36,6 +36,7 @@ export default function NewPostForm({ closeModale = () => {} }) {
 						width={50}
 						height={50}
 						className="rounded-full mt-5"
+						unoptimized={true}
 					/>
 				</div>
 

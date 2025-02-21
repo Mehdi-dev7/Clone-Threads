@@ -38,6 +38,7 @@ export default function Post({ post }) {
 					width={50}
 					height={50}
 					className="rounded-full object-cover"
+					unoptimized={true}
 				/>
 			</div>
 

@@ -9,6 +9,7 @@ import { notFound, useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "react-toastify";
 
 export default function Profile() {
 	// Variable
@@ -42,7 +43,6 @@ export default function Profile() {
 			document.body.style.overflow = "unset";
 		}
 	}, [openModale]);
-
 
 	// Function
 	const fetchUserDataPosts = async () => {
@@ -78,7 +78,40 @@ export default function Profile() {
 
 		setOpenModale(true);
 	};
-	const editUser = async () => {}
+	const editUser = async () => {
+		if (isLoading) return;
+		setIsLoading(true);
+
+		const response = await fetch("/api/user/edit", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				pseudo: pseudo,
+				profile: profileInput,
+				bio: bioInput,
+				url: linkInput,
+			}),
+		});
+
+		const data = await response.json();
+		if (!response.ok) {
+			setIsLoading(false);
+			toast.error("une erreur est survenue");
+			return;
+		}
+		const newUser = {
+			...user,
+			profile: profileInput,
+			bio: bioInput,
+			url: linkInput,
+		};
+		setUser(newUser);
+		setIsLoading(false);
+		setOpenModale(false);
+		toast.success("Le profil a été modifié avec succès");
+	};
 
 	return (
 		<ConnectedLayout>
@@ -110,11 +143,12 @@ export default function Profile() {
 								</div>
 								<div>
 									<Image
-										src={user.profile}
+										src={user.profile || "/picture.png"}
 										alt="User"
 										width={100}
 										height={100}
 										className="rounded-full object-cover"
+										unoptimized={true}
 									/>
 								</div>
 							</div>
@@ -134,13 +168,23 @@ export default function Profile() {
 							</div>
 							{/* url */}
 							<div className="mt-5">
-								<label htmlFor="url" className="label">Lien</label>
-								<input type="url" name="url" className="input" placeholder="https://believemy.com" value={linkInput} onChange={(e) => setLinkInput(e.target.value)} />
+								<label htmlFor="url" className="label">
+									Lien
+								</label>
+								<input
+									type="url"
+									name="url"
+									className="input"
+									placeholder="https://believemy.com"
+									value={linkInput}
+									onChange={(e) => setLinkInput(e.target.value)}
+								/>
 							</div>
 							<div className="flex justify-end mt-1">
 								<div>
 									<Button onClick={editUser} disabled={isLoading}>
-										Terminer</Button>
+										Terminer
+									</Button>
 								</div>
 							</div>
 						</div>
@@ -157,7 +201,7 @@ export default function Profile() {
 						<div className="text-threads-gray-light mt-2">@{pseudo}</div>
 						<div className="mt-5 whitespace-pre-line">{user.bio}</div>
 						{user && user.url && (
-							<div className="mt-5 text-blue-500 hover:text-blue-400 duration-150">
+							<div className="mt-5 text-blue-500 hover:text-blue-400 duration-150 inline-block">
 								<a href={user.url} target="_blank">
 									{user.url}
 								</a>
@@ -173,6 +217,7 @@ export default function Profile() {
 							width={100}
 							height={100}
 							className="rounded-full object-cover"
+							unoptimized={true}
 						/>
 					</div>
 				</div>
