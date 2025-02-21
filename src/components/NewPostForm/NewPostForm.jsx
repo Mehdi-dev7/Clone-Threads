@@ -6,7 +6,7 @@ import Button from "../Button/Button";
 import { toast } from "react-toastify";
 import { createPost } from "@/actions/create-post";
 
-export default function NewPostForm() {
+export default function NewPostForm({ closeModale = () => {} }) {
 	// Variables
 	const { data: session } = useSession();
 
@@ -22,6 +22,7 @@ export default function NewPostForm() {
 		} catch (error) {
 			return toast.error(error.message);
 		}
+		closeModale();
 	};
 
 	return (
