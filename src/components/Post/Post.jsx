@@ -5,7 +5,7 @@ import Link from "next/link";
 import moment from "moment-timezone";
 import "moment/locale/fr";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { deletePost } from "@/actions/delete-post";
 
@@ -15,6 +15,22 @@ export default function Post({ post }) {
 
 	// State
 	const [optionsAreOpen, setOptionsAreOpen] = useState(false);
+
+	// Cycles
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (optionsAreOpen && !event.target.closest(".options")) {
+				setOptionsAreOpen(false);
+			}
+		};
+	
+		document.addEventListener("mousedown", handleClickOutside);
+	
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [optionsAreOpen]);
+	
 
 	// Function
 	const onDeletePost = async () => {

@@ -13,6 +13,7 @@ export async function POST(request) {
     bio = "-";
   }
 
+
   let client;
   try {
     // Connect to MongoDB cluster
