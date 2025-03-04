@@ -23,14 +23,13 @@ export default function Post({ post }) {
 				setOptionsAreOpen(false);
 			}
 		};
-	
+
 		document.addEventListener("mousedown", handleClickOutside);
-	
+
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [optionsAreOpen]);
-	
 
 	// Function
 	const onDeletePost = async () => {
@@ -46,16 +45,17 @@ export default function Post({ post }) {
 	return (
 		<div className="post">
 			{/* Photo */}
-
 			<div>
-				<Image
-					src={post.profile}
-					alt="User"
-					width={50}
-					height={50}
-					className="rounded-full object-cover"
-					unoptimized={true}
-				/>
+				<div className="w-[50] h-[50] relative rounded-full overflow-hidden shadow-sm">
+					<Image
+						src={post.profile}
+						alt="User"
+						fill
+						sizes="48px"
+						className="object-cover"
+						unoptimized={true}
+					/>
+				</div>
 			</div>
 
 			{/* Content */}

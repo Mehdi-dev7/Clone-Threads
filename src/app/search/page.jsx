@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import ConnectedLayout from "@/components/ConectedLayout/ConnectedLayout";
 import Button from "@/components/Button/Button";
 import { toast } from "react-toastify";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Search() {
 	const [query, setQuery] = useState("");
@@ -67,18 +69,35 @@ export default function Search() {
 					{loading ? (
 						<div className="text-center text-gray-500">Chargement...</div>
 					) : results.length > 0 ? (
-						<ul className="space-y-4">
-							{results.map((user) => (
-								<li
+						<div className="bg-threads-gray-dark text-white shadow-md rounded-lg overflow-hidden">
+							{results.map((user, index) => (
+								<div
 									key={user._id}
-									className="p-4 border rounded-lg bg-gray-100"
+									className={`flex items-center gap-3 p-3 ${
+										index !== results.length - 1
+											? "border-b border-gray-300"
+											: ""
+									}`}
 								>
-									<a href={`/@${user.pseudo}`} className="user-button">
-										{user.pseudo}
-									</a>
-								</li>
+									<div className="w-[50] h-[50] relative rounded-full overflow-hidden shadow-sm">
+										<Image
+											src={user.profile}
+											alt="User"
+											fill
+											sizes="48px"
+											className="object-cover"
+											unoptimized={true}
+										/>
+									</div>
+									<Link
+										href={`/@${user.pseudo}`}
+										className="hover:text-gray-400 duration-150"
+									>
+										<b>{user.pseudo}</b>
+									</Link>
+								</div>
 							))}
-						</ul>
+						</div>
 					) : (
 						<div className="text-center text-gray-500 mt-4">
 							Aucun utilisateur trouvé

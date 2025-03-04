@@ -141,13 +141,14 @@ export default function Profile() {
 										onChange={(e) => setProfileInput(e.target.value)}
 									/>
 								</div>
-								<div>
+								<div className="w-[50] h-[50] relative rounded-full overflow-hidden shadow-sm">
 									<Image
 										src={user.profile || "/picture.png"}
 										alt="User"
-										width={100}
-										height={100}
-										className="rounded-full object-cover"
+										fill
+										sizes="48px"
+										className="object-cover"
+										
 										unoptimized={true}
 									/>
 								</div>
@@ -210,13 +211,13 @@ export default function Profile() {
 					</div>
 
 					{/* Photo */}
-					<div>
+					<div className="w-[50] h-[50] relative rounded-full overflow-hidden shadow-sm">
 						<Image
 							src={user.profile || "/picture.png"}
 							alt="User"
-							width={100}
-							height={100}
-							className="rounded-full object-cover"
+							fill
+							sizes="48px"
+							className="object-cover"
 							unoptimized={true}
 						/>
 					</div>
