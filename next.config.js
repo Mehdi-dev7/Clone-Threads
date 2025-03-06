@@ -21,7 +21,7 @@ module.exports = (env) => {
 					"mongodb+srv://abouqaysmehdi:9867mnhiUz7Vv0XV@cluster-threads.mel80.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-threads",
 				MONGODB_DATABASE: "threads",
 				NEXTAUTH_SECRET: "jergejgijgqjqgjgjipekgjqù",
-				NEXTAUTH_URL: "http://localhost:3000",
+				NEXTAUTH_URL: "https://clone-threads-rho.vercel.app/",
 			},
 		};
 	}
