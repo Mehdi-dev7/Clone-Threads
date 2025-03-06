@@ -6,6 +6,7 @@ import { AuthProvider } from "./Providers";
 export const metadata = {
 	title: "Threads",
 	description: "partagez des threads ! :",
+	icons: "/favicon.ico"
 };
 
 export default function RootLayout({ children }) {
