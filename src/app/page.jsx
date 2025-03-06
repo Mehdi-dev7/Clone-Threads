@@ -29,6 +29,12 @@ export default async function Index() {
 		posts = posts.map((post) => ({
 			...post,
 			_id: post._id.toString(),
+			creation: post.creation.toString(),
+			replies: post.replies ? post.replies.map((reply) => ({
+				...reply,
+				_id: reply._id.toString(),
+				creation: reply.creation.toString(),
+			})) : [],
 		}));
 	} catch (error) {
 		throw new Error(error.message);

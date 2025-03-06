@@ -52,7 +52,7 @@ export default function NewPostForm({ closeModale = () => {} }) {
 					></textarea>
 				</div>
 			</div>
-			<div className="flex justify-end">
+			<div className="flex justify-end mb-4">
 				<div>
 					<Button formButton disabled={textarea.length < 1}>
 						Publier
