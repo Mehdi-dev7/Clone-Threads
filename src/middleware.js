@@ -13,6 +13,11 @@ export function middleware(request) {
 
 
   // Check if is connected
+  if(hasCookie("_secure-next-auth.session-token", {cookies})) {
+    isAuthenticade = true;
+  }
+
+
 
   // Check if is authenticated
   if(!isAuthenticade){
